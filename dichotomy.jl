@@ -22,6 +22,32 @@ function intervalSearch(f::Function,y::Float64,xb::Float64,xe::Float64)
 end
 
 
+
+function dichotomy(f::Function,y::Float64,xb::Float64,xe::Float64)
+    # assumes f is increasing
+    @assert xe>xb
+    
+
+    while xe-xb>(1+maximum((abs([xb,xe]))))*eps(Float64)    
+        xm=(xb+xe)/2
+        yb=f(xb)
+        ye=f(xe)
+        ym=f(xm)
+
+        if ym==y
+            return xm
+        elseif ym>y
+            xe=xm
+        else
+            xb=xm
+        end
+    end
+    return (xb+xe)/2
+end
+
+
+#=
+# recursive version leads to a stack overflow
 function dichotomy(f::Function,y::Float64,xb::Float64,xe::Float64)
     # assumes f is increasing
     @assert xe>xb
@@ -37,6 +63,7 @@ function dichotomy(f::Function,y::Float64,xb::Float64,xe::Float64)
         return dichotomy(f,y,xm,xe)
     end
 end
+=#
 
 
 function testSolve()
