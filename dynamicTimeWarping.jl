@@ -46,3 +46,22 @@ function dynamicTimeWarping(s::Array{Float64,2},t::Array{Float64,2})
 end
 
 
+function smoothDtwTime(tx)
+    rx=Array(Float64,length(tx))
+    for i in 1:length(tx)
+        rx[i]=convert(Float64,tx[i])
+    end
+    
+    beginBlock=1
+    for i in 2:length(tx)
+        if rx[i]!=rx[beginBlock]
+            if i-beginBlock != 1
+               rx[beginBlock:i]=linspace(rx[beginBlock],rx[i],i-beginBlock+1)
+            end
+            beginBlock=i
+        end
+    end
+    return rx
+end
+
+
