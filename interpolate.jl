@@ -1,14 +1,12 @@
-len=50
-px=cumsum(randn(len).^2)
-py=cumsum(randn(len).^2)
-
-
 function interpolate(x,px::Array{Float64,1},py::Array{Float64,1})
+    # piecewise linear interpolation
     @assert length(px)==length(py)
     # assumes px and py are both sorted in ascending order
     iPxB=searchsortedlast(px,x)
     iPxE=searchsortedfirst(px,x)
 
+    
+    # interpolate by constant if out of range
     if iPxB<1
         return py[1]
     end
